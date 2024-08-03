@@ -1,73 +1,158 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Project Title
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a comprehensive solution for sales and account managers to record conversations with customers and use OpenAI to extract relevant data to be submitted to Salesforce CRM. The application includes features for transcribing audio conversations, analyzing the text using OpenAI, generating suggestions for sales managers, and integrating with Salesforce for data management.
+
+## Features
+
+- **Audio Transcription**: Transcribe audio conversations using Google Cloud Speech-to-Text.
+- **Text Analysis**: Analyze transcribed text using OpenAI to extract relevant data.
+- **Salesforce Integration**: Create and update Salesforce records (leads, contacts, accounts, opportunities, tasks) based on analyzed data.
+- **Suggestions Generation**: Generate actionable suggestions for sales managers based on conversation analysis.
+- **Note Creation**: Automatically create notes in Salesforce with suggestions from conversation analysis.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/en/download/) (version 14 or higher)
+- [npm](https://www.npmjs.com/get-npm) (version 6 or higher)
+- A [Google Cloud](https://cloud.google.com/) account with Speech-to-Text API enabled
+- An [OpenAI](https://www.openai.com/) account with API key
+- A [Salesforce](https://www.salesforce.com/) account
 
 ## Installation
 
-```bash
-$ pnpm install
-```
+1. Clone the repository:
 
-## Running the app
+   ```sh
+   git clone https://github.com/yourusername/your-repo-name.git
+   cd your-repo-name
+   
+2. Install the dependencies:
+   
+      ```sh
+      pnpm install
 
-```bash
-# development
-$ pnpm run start
+3. Create a .env file in the root directory and add the following environment variables:
+    
+     ```sh
+      GOOGLE_APPLICATION_CREDENTIALS=path/to/your/google-cloud-service-account-file.json
+      OPENAI_API_KEY=your-openai-api-key
+      SALESFORCE_USERNAME=your-salesforce-username
+      SALESFORCE_PASSWORD=your-salesforce-password
+      SALESFORCE_TOKEN=your-salesforce-security-token
+      SALESFORCE_LOGIN_URL=https://login.salesforce.com
 
-# watch mode
-$ pnpm run start:dev
+4. Ensure the GOOGLE_APPLICATION_CREDENTIALS file is accessible and correctly configured.
 
-# production mode
-$ pnpm run start:prod
-```
+## Usage
 
-## Test
+1. Start the server:
 
-```bash
-# unit tests
-$ pnpm run test
+   ```sh
+   pnpm start
 
-# e2e tests
-$ pnpm run test:e2e
+2. Use a tool like Postman or cURL to interact with the API endpoints.
 
-# test coverage
-$ pnpm run test:cov
-```
+# API Endpoints
 
-## Support
+## Upload Conversation
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **URL**: `/conversations/upload`
+- **Method**: `POST`
+- **Description**: Upload an audio file and process the conversation.
+- **Headers**: `Content-Type: multipart/form-data`
+- **Body**:
+    - `conversation` (file): The audio file to be processed.
 
-## Stay in touch
+## Create Lead
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **URL**: `/conversations/lead`
+- **Method**: `POST`
+- **Description**: Create a new lead in Salesforce.
+- **Body**:
+    - JSON object with lead data.
 
-## License
+## Update Contact
 
-Nest is [MIT licensed](LICENSE).
+- **URL**: `/conversations/contact/:id`
+- **Method**: `PUT`
+- **Description**: Update an existing contact in Salesforce.
+- **Body**:
+    - JSON object with updated contact data.
+
+## Create Account
+
+- **URL**: `/conversations/account`
+- **Method**: `POST`
+- **Description**: Create a new account in Salesforce.
+- **Body**:
+    - JSON object with account data.
+
+## Update Account
+
+- **URL**: `/conversations/account/:id`
+- **Method**: `PUT`
+- **Description**: Update an existing account in Salesforce.
+- **Body**:
+    - JSON object with updated account data.
+
+## Create Opportunity
+
+- **URL**: `/conversations/opportunity`
+- **Method**: `POST`
+- **Description**: Create a new opportunity in Salesforce.
+- **Body**:
+    - JSON object with opportunity data.
+
+## Update Opportunity
+
+- **URL**: `/conversations/opportunity/:id`
+- **Method**: `PUT`
+- **Description**: Update an existing opportunity in Salesforce.
+- **Body**:
+    - JSON object with updated opportunity data.
+
+## Create Task
+
+- **URL**: `/conversations/task`
+- **Method**: `POST`
+- **Description**: Create a new task in Salesforce.
+- **Body**:
+    - JSON object with task data.
+
+## Update Task
+
+- **URL**: `/conversations/task/:id`
+- **Method**: `PUT`
+- **Description**: Update an existing task in Salesforce.
+- **Body**:
+    - JSON object with updated task data.
+
+## Query Salesforce
+
+- **URL**: `/conversations/query`
+- **Method**: `GET`
+- **Description**: Query Salesforce data using SOQL.
+- **Parameters**:
+    - `q` (string): The SOQL query string.
+
+# Testing
+
+Ensure you have set up the environment variables in the `.env` file.
+
+Run the tests:
+
+    ```sh
+    npm run test
+
+
+# Contact
+
+For questions or feedback, please reach out to:
+
+- **Name**: Ziv Shoshany
+- **Email**: ziv.sho@gmail.com
+- **GitHub**: [ziv-sho](https://github.com/ziv-sho)
+
+
